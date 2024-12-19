@@ -3,7 +3,7 @@
 # Steven Doran
 
 data_path=/pnfs/annie/persistent/processed/PrintDQ_metrics/
-output_path=/pnfs/annie/persistent/users/doran/output/PrintDQ/
+output_path=/pnfs/annie/persistent/users/<user>/output/PrintDQ/
 
 # Overwrite not enabled for ifdh cp - skip the file if it exists in /persistent
 file_exists() {
