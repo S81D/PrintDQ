@@ -7,9 +7,9 @@ import os
 def submit_PrintDQ(scratch_path, output_path, data_path, TA_tar_name):
 
     # job resources
-    lifetime = str(8)       # hr
-    mem = str(4000)         # MB
-    disk = str(15)          # GB
+    lifetime = str(12)       # hr
+    mem = str(2000)          # MB
+    disk = str(12)           # GB
 
     print('\nResource allocation per job:')             
     print('   - lifetime   = ' + lifetime + 'hr')
