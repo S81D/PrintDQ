@@ -38,8 +38,6 @@ For plotting run metrics:
 
 - The run quality metrics plotted by the `PrintDQ` toolchain can be found here: https://github.com/ANNIEsoft/ToolAnalysis/tree/Application/UserTools/PrintDQ
 
-- For the `plot_metrics.py` script, since we are running it in the `scratch/` area overwrite permissions are weird, even for your own user area. It is recommended you remove old plots in `DQ_plots/` prior to running the script or you will not be able to overwrite them.
-
 -----------------------
 
 To check on your jobs, use: ```jobsub_q -G annie --user <<username>>```
