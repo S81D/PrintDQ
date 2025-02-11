@@ -21,7 +21,9 @@ PDF_name = 'Run_Metrics.pdf'
 
 # ------------------------------------------------------- #
 
-os.system('mkdir -p ' + plot_dir)
+# scratch write permissions are weird and won't allow you to overwrite
+os.system('rm -rf ' + plot_dir)
+os.system('mkdir ' + plot_dir)
 
 def extract_metrics(directory):
 
