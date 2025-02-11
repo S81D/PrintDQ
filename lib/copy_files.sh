@@ -2,8 +2,10 @@
 # script to transfer .csv files created from the PrintDQ toolchain to the persistent/ area
 # Steven Doran
 
+username=<user>    # edit accordingly
+
 data_path=/pnfs/annie/persistent/processed/PrintDQ_metrics/
-output_path=/pnfs/annie/persistent/users/<user>/output/PrintDQ/
+output_path=/pnfs/annie/scratch/users/${username}/output/PrintDQ/    # you may need to create an output/PrintDQ/ scratch folder if not already present, or edit accordingly
 
 # Overwrite not enabled for ifdh cp - skip the file if it exists in /persistent
 file_exists() {
