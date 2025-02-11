@@ -34,6 +34,7 @@ For plotting run metrics:
 
 ### Additional information
 
+- Jobs will deposit to `/pnfs/annie/scratch/users/<user>/output/PrintDQ/`; make sure you either mimic this output directory structure in your user area or edit accordingly in the scripts (and in `lib/copy_files.sh`).
 - The `PrintDQ` toolchain often takes a very long time on certain part files. This will sometimes lead to jobs hanging, depending on the grid resources. Ordinarily, the toolchain can be run quickly (< 10 min) over ~hundreds of part files. In other cases, a single part file may take > 10 min. To be safe, a large resource allocation is requested for each job. The `ClusterFinder` tool is the primary culprit for any long run times, and occasionally will reach an event in a particular part file that takes extremely long to process (for whatever reason). The larger resource allocation also accounts for copying hundreds of part files for a given run, which takes time + disk space.
 
 - The run quality metrics plotted by the `PrintDQ` toolchain can be found here: https://github.com/ANNIEsoft/ToolAnalysis/tree/Application/UserTools/PrintDQ
