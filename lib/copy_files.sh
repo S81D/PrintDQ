@@ -16,10 +16,6 @@ file_exists() {
     fi
 }
 
-# setup transfer
-source /cvmfs/fermilab.opensciencegrid.org/products/common/etc/setup
-setup ifdhc v2_5_4
-
 echo ""
 echo "Transferring PrintDQ .csv files..."
 echo ""
@@ -39,7 +35,7 @@ for run_folder in "$output_path"*/; do
             echo "$csv_file already exists in $data_path. Skipping..."
         else
             echo "Transferring $csv_file to $data_path..."
-            ifdh cp "$source_file" "$data_path/"
+            cp "$source_file" "$data_path/."
         fi
     else
         echo "No .csv file found for run $run_number. Skipping..."
