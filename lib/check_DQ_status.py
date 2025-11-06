@@ -14,6 +14,7 @@ run_to = 'current'                  # the script will show runs up to this one (
 
 run_back = 5300                # the script will only check runs this far back
 
+                               # for now, the PrintDQ is only designed for beam runs, but keep this functionality in case the tool is ever expanded
 run_type = 'beam'              # specify run type you would like to check ('beam', 'LED', 'cosmic', 'laser', 'AmBe')
 
 min_part_size = 3              # only check for runs with atleast this many part files
@@ -24,6 +25,7 @@ rawdata_path = '/pnfs/annie/persistent/raw/raw/'
 prodata_path = '/pnfs/annie/persistent/processed/processed_EBV2/'
 printdq_path = '/pnfs/annie/persistent/processed/PrintDQ_metrics/'
 
+# you need to create this file (see README) before executing
 SQL_path = 'ANNIE_SQL_RUNS.txt'
 
 ##########################################################################################
