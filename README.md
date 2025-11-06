@@ -11,6 +11,7 @@ Scripts to run the `PrintDQ` toolchain on the grid and create run metric plots.
 - `tarball_create_script.py` will tar-ball your local copy of ToolAnalysis in preparation for grid submission.
 - `copy_files.sh` will copy .csv files deposited by the grid jobs to `persistent/`.
 - `plot_metrics.py` creates run metric plots using the .csv files from `PrintDQ`.
+- `check_DQ_status.py` outputs a snapshot of which runs have yet to be processed with the `PrintDQ` toolchain
 
 ### Usage:
 
@@ -38,6 +39,8 @@ For plotting run metrics:
 - The `PrintDQ` toolchain often takes a very long time on certain part files. This will sometimes lead to jobs hanging, depending on the grid resources. Ordinarily, the toolchain can be run quickly (< 10 min) over ~hundreds of part files. In other cases, a single part file may take > 10 min. To be safe, a large resource allocation is requested for each job. The `ClusterFinder` tool is the primary culprit for any long run times, and occasionally will reach an event in a particular part file that takes extremely long to process (for whatever reason). The larger resource allocation also accounts for copying hundreds of part files for a given run, which takes time + disk space.
 
 - The run quality metrics plotted by the `PrintDQ` toolchain can be found here: https://github.com/ANNIEsoft/ToolAnalysis/tree/Application/UserTools/PrintDQ
+
+- `python3 lib/check_DQ_status` outputs a summary snapshot of which PrintDQ files have yet to be processed (checking which ProcessedData is available). It relies on the presence of an SQL file in your pwd. For info on how to produce the file: https://github.com/S81D/autoANNIE/blob/main/README.md
 
 -----------------------
 
