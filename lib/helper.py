@@ -9,12 +9,11 @@ def submit_PrintDQ(scratch_path, output_path, data_path, TA_tar_name):
     # job resources
     lifetime = str(6)        # hr
     mem = str(4000)          # MB
-    disk = str(10)           # GB
+    # disk space calculated dynamically (below)
 
     print('\nResource allocation per job:')             
     print('   - lifetime   = ' + lifetime + 'hr')
-    print('   - memory     = ' + mem + 'MB')     
-    print('   - disk space = ' + disk + 'GB\n')  
+    print('   - memory     = ' + mem + 'MB')
 
     file = open(scratch_path + '/submit_grid_job.sh', "w")
 
@@ -30,11 +29,6 @@ def submit_PrintDQ(scratch_path, output_path, data_path, TA_tar_name):
     file.write('export PROCESSED_FILES_PATH=' + data_path + '/R${RUN}/\n')
     file.write('\n')
 
-    file.write('echo ""\n')
-    file.write('echo "submitting job..."\n')
-    file.write('echo ""\n')
-    file.write('\n')
-
     file.write('QUEUE=medium\n')
     file.write('\n')
 
@@ -48,7 +42,23 @@ def submit_PrintDQ(scratch_path, output_path, data_path, TA_tar_name):
     file.write('done\n')
     file.write('\n')
 
-    file.write('jobsub_submit --memory=' + mem + 'MB --expected-lifetime=' + lifetime + 'h -G annie --disk=' + disk + 'GB ')
+    file.write('# Calculate required disk space based on input files\n')
+    # dynamic disk allocation: get total size in KB, convert to GB, add buffer (5 GB)
+    file.write('TOTAL_SIZE=$(du -sk ${PROCESSED_FILES_PATH}ProcessedData* 2>/dev/null | awk \'{sum+=$1} END {print sum}\')\n')
+    file.write('DISK_GB=$(echo "scale=0; ($TOTAL_SIZE / 1024 / 1024) + 5" | bc)\n')
+    file.write('# Set minimum disk space\n')
+    file.write('if [ $DISK_GB -lt 10 ]; then\n')    # min will be 10 GB
+    file.write('    DISK_GB=10\n')
+    file.write('fi\n')
+    file.write('echo "   - disk space = ${DISK_GB}GB"\n')
+    file.write('\n')
+
+    file.write('echo ""\n')
+    file.write('echo "submitting job..."\n')
+    file.write('echo ""\n')
+    file.write('\n')
+
+    file.write('jobsub_submit --memory=' + mem + 'MB --expected-lifetime=' + lifetime + 'h -G annie --disk=${DISK_GB}GB ')
 
     # use OFFSITE resources
     file.write('--resource-provides=usage_model=OFFSITE --blacklist=Omaha,Swan,Wisconsin,RAL ')
