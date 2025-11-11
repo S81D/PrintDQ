@@ -24,6 +24,7 @@ min_part_size = 3              # only check for runs with atleast this many part
 rawdata_path = '/pnfs/annie/persistent/raw/raw/'
 prodata_path = '/pnfs/annie/persistent/processed/processed_EBV2/'
 printdq_path = '/pnfs/annie/persistent/processed/PrintDQ_metrics/'
+scratch_printdq_path = '/pnfs/annie/scratch/users/doran/output/PrintDQ/'
 
 # you need to create this file (see README) before executing
 SQL_path = 'ANNIE_SQL_RUNS.txt'
@@ -31,9 +32,9 @@ SQL_path = 'ANNIE_SQL_RUNS.txt'
 ##########################################################################################
 
 # define color codes for text output
-RESET = "\033[0m"                      # white = PrintDQ file exists
-RED = "\033[91m"                       # red = PrintDQ file not present
-GREEN = "\033[92m"                     # green = PrintDQ complete (for emphasis if needed)
+RESET = "\033[0m"                      # white = PrintDQ file exists in persistent
+RED = "\033[91m"                       # red = PrintDQ file not present in scratch (has not yet been created)
+GREEN = "\033[92m"                     # green = PrintDQ complete (ready to transfer to persistent)
 DARK_GRAY = "\033[90m"                 # gray = ProcessedData not available
 
 
@@ -81,7 +82,7 @@ def read_SQL(SQL_file, run_back, run_type):
     return run_data
 
 
-def check_printdq_status(sql, rawdata_path, prodata_path, printdq_path):
+def check_printdq_status(sql, rawdata_path, prodata_path, printdq_path, scratch_printdq_path):
 
     # column header
     print(f"{'RUN':<3} {'TYPE':<2} {'PRO':<3} STATUS")
@@ -92,6 +93,7 @@ def check_printdq_status(sql, rawdata_path, prodata_path, printdq_path):
         raw_run_folder = os.path.join(rawdata_path, run_number)
         processed_run_folder = os.path.join(prodata_path, f"R{run_number}")
         printdq_file = os.path.join(printdq_path, f"R{run_number}_PrintDQ.csv")
+        scratch_printdq_folder = os.path.join(scratch_printdq_path, run_number)
 
         # check if RAWDATA folder exists
         if not os.path.isdir(raw_run_folder):
@@ -121,6 +123,16 @@ def check_printdq_status(sql, rawdata_path, prodata_path, printdq_path):
 
         # check if PrintDQ file exists
         if not os.path.exists(printdq_file):
+          
+            # check if PrintDQ file exists in scratch
+            if os.path.isdir(scratch_printdq_folder):
+                scratch_printdq_file = os.path.join(scratch_printdq_folder, f"R{run_number}_PrintDQ.csv")
+
+                if os.path.exists(scratch_printdq_file):
+                    print(f"{GREEN}{run_number:>4} {run_type:>2} {num_processed_files:>4} READY TO TRANSFER{RESET}")
+                    continue
+
+            # otherwise its mising
             print(f"{RED}{run_number:>4} {run_type:>2} {num_processed_files:>4} PRINTDQ NOT PRESENT{RESET}")
             continue
 
@@ -131,5 +143,5 @@ def check_printdq_status(sql, rawdata_path, prodata_path, printdq_path):
 print('\n')
 run_type_list = get_run_type(run_type)
 sql = read_SQL(SQL_path, run_back, run_type_list)
-check_printdq_status(sql, rawdata_path, prodata_path, printdq_path)
+check_printdq_status(sql, rawdata_path, prodata_path, printdq_path, scratch_printdq_path)
 print('\n')
